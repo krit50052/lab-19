@@ -63,12 +63,37 @@ void Unit::newTurn(){
 	guard_on = false;
 }
 
+bool Unit::isDead(){
+    return hp <= 0;
+}
 
+void Unit::guard(){
+    guard_on = true;
+}
 
-/////////////////////////////////////////////////////////////////////////////////////
-//Write function members isDead(), guard(), heal(), beAttacked(), and attack() here//
-/////////////////////////////////////////////////////////////////////////////////////
+int Unit::beAttacked(int enemy_atk){
+    int damage;
+    if(guard_on == false){
+        damage = enemy_atk - def;
+    } else {
+        damage = (enemy_atk - def) / 3;
+    }
+    hp -= damage;
+    return damage;
+}
 
+int Unit::attack(Unit &target){
+    return target.beAttacked(atk);
+}
+
+int Unit::heal(){
+    int recovered = rand() % 21 + 10;
+    if(hp + recovered > hpmax){
+        recovered = hpmax - hp;
+    }
+    hp += recovered;
+    return recovered;
+}
 
 
 void drawScene(char p_action,int p,char m_action,int m){
